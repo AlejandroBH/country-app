@@ -14,9 +14,26 @@ export class CountryService {
   private http = inject(HttpClient);
 
   searchByCapital(query: string): Observable<Country[]> {
+    const URL = `${API_URL}/capital/${query}`;
     query = query.toLowerCase();
 
-    return this.http.get<RESTCountry[]>(`${API_URL}/capital/${query}`).pipe(
+    return this.http.get<RESTCountry[]>(URL).pipe(
+      map((resp) => CountryMapper.mapRestCountryToCountryArray(resp)),
+      catchError((error) => {
+        console.log('Error fetching ', error);
+
+        return throwError(
+          () => new Error(`No se pudo obtener países con ese query ${query}`)
+        );
+      })
+    );
+  }
+
+  searchByCountry(query: string): Observable<Country[]> {
+    const URL = `${API_URL}/name/${query}`;
+    query = query.toLowerCase();
+
+    return this.http.get<RESTCountry[]>(URL).pipe(
       map((resp) => CountryMapper.mapRestCountryToCountryArray(resp)),
       catchError((error) => {
         console.log('Error fetching ', error);
