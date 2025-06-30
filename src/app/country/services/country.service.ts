@@ -1,9 +1,9 @@
+import { CountryMapper } from '../mappers/country.mapper';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import type { RESTCountry } from '../interfaces/rest-countries.interface';
-import { map, Observable, catchError, throwError } from 'rxjs';
+import { map, Observable, catchError, throwError, delay } from 'rxjs';
 import type { Country } from '../interfaces/country.interface';
-import { CountryMapper } from '../mappers/country.mapper';
+import type { RESTCountry } from '../interfaces/rest-countries.interface';
 
 const API_URL = 'https://restcountries.com/v3.1';
 
@@ -19,6 +19,7 @@ export class CountryService {
 
     return this.http.get<RESTCountry[]>(URL).pipe(
       map((resp) => CountryMapper.mapRestCountryToCountryArray(resp)),
+      delay(2000),
       catchError((error) => {
         console.log('Error fetching ', error);
 
@@ -35,6 +36,7 @@ export class CountryService {
 
     return this.http.get<RESTCountry[]>(URL).pipe(
       map((resp) => CountryMapper.mapRestCountryToCountryArray(resp)),
+      delay(2000),
       catchError((error) => {
         console.log('Error fetching ', error);
 
