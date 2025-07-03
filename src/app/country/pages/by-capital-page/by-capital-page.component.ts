@@ -18,7 +18,6 @@ export class ByCapitalPageComponent {
   router = inject(Router);
 
   queryParam = this.activatedRoute.snapshot.queryParamMap.get('query') ?? '';
-
   query = linkedSignal(() => this.queryParam);
 
   capitalResource = rxResource({
